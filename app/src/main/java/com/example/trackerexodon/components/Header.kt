@@ -26,27 +26,28 @@ fun Header() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+
         Image(
-            painter = painterResource(id = R.drawable.ic_menu),
+            painter = painterResource(id = R.drawable.ic_sun),
             contentDescription = null,
             modifier = Modifier.size(32.dp)
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "Tracker",
-                color = Color(0xFFFFFFFF),
+                color = Color(0xFF3FDB9D),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Text(
                 text = "Exodon",
-                color = Color(0xFF3FDB9D),
+                color = Color(0xFFFFFFFF),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
         Image(
-            painter = painterResource(id = R.drawable.ic_sun),
+            painter = painterResource(id = R.drawable.ic_menu),
             contentDescription = null,
             modifier = Modifier.size(32.dp)
         )
