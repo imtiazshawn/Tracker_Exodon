@@ -33,7 +33,7 @@ fun Header() {
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Expense",
+                text = "Tracker",
                 color = Color(0xFFFFFFFF),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold
