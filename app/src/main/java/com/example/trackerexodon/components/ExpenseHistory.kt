@@ -51,7 +51,7 @@ fun ExpenseHistory(list: List<ExpenseEntity>) {
                     date = item.date.toString(),
                     category = item.category,
                     type = item.type,
-                    color = if (item.type == "Income") Color.Green else Color.Red
+                    color = if (item.type == "Income") Color(0xFF3FDB9D) else Color(0xFFFC575D)
                 )
             }
         }
@@ -87,7 +87,7 @@ fun TransactionItem(
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = "$title", color = Color.White, fontSize = 16.sp )
         }
-        Text(text = "+ $amount", color = Color(0xFF3FDB9D), fontSize = 16.sp)
+        Text(text = "+ $amount", color = color, fontSize = 16.sp)
     }
     Spacer(modifier = Modifier.height(12.dp))
 }
