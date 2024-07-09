@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,7 +40,7 @@ import androidx.compose.ui.unit.sp
 import com.example.trackerexodon.R
 import com.example.trackerexodon.utils.DateFormatter
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun DataForm(viewModel: ExpenseViewModel, dateDialogVisibility: MutableState<Boolean>) {
 
@@ -192,13 +191,15 @@ fun DataForm(viewModel: ExpenseViewModel, dateDialogVisibility: MutableState<Boo
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     BasicTextField(
-                        value = if (date.value == 0L) "" else DateFormatter.formatDateToHumanReadableForm(date.value),
+                        value = if (date.value.isEmpty()) "" else DateFormatter.formatDateToHumanReadableForm(date.value.toLong()),
+//                        value = if (date.value.isEmpty()) "" else "${date.value}",
                         onValueChange = { },
                         enabled = false
                     ) {
                         Text(
-                            text = if (date.value == 0L) "Date" else "${DateFormatter.formatDateToHumanReadableForm(date.value)}",
-                            color = if (date.value == 0L) Color.Gray else Color.White,
+                            text = if (date.value.isEmpty()) "Date" else DateFormatter.formatDateToHumanReadableForm(date.value.toLong()),
+//                            text = if (date.value.isEmpty()) "Date" else "${date.value}",
+                            color = if (date.value.isEmpty()) Color.Gray else Color.White,
                             modifier = Modifier.padding(start = 4.dp)
                         )
                     }
@@ -267,7 +268,7 @@ fun DataForm(viewModel: ExpenseViewModel, dateDialogVisibility: MutableState<Boo
             Divider(color = Color(0xFF414141), thickness = 1.dp)
         }
 
-        // Category
+        // Type
         Column(
             modifier = Modifier.clickable { typeExpand = true }
         ) {
