@@ -20,16 +20,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.expensetracker.viewmodel.HomeViewModel
+import com.example.expensetracker.viewmodel.HomeViewModelFactory
 import com.example.trackerexodon.R
 import com.example.trackerexodon.data.model.ExpenseEntity
+import com.example.trackerexodon.utils.DateFormatter
 
 @Composable
 fun ExpenseHistory(list: List<ExpenseEntity>) {
+    val viewModel: HomeViewModel =
+        HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,17 +47,38 @@ fun ExpenseHistory(list: List<ExpenseEntity>) {
             fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(12.dp))
-        LazyColumn {
-            items(list) { item ->
-                TransactionItem(
-                    id = item.id,
-                    title = item.title,
-                    amount = item.amount.toString(),
-                    date = item.date.toString(),
-                    category = item.category,
-                    type = item.type,
-                    color = if (item.type == "Income") Color(0xFF3FDB9D) else Color(0xFFFC575D)
+
+        if (list.isEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_not_found),
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
                 )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "There is no Transaction Item",
+                    color = Color.White,
+                    fontSize = 14.sp
+                )
+            }
+        } else {
+            LazyColumn {
+                items(list) { item ->
+                    TransactionItem(
+                        id = item.id,
+                        title = item.title,
+                        amount = item.amount.toString(),
+                        date = DateFormatter.formatDateToHumanReadableForm(item.date.toLong()),
+                        category = item.category,
+                        type = item.type,
+                        color = if (item.type == "Income") Color(0xFF3FDB9D) else Color(0xFFFC575D),
+                        icon = viewModel.getItemIcon(item),
+                        valueType = if (item.type == "Income") "+" else "-"
+                    )
+                }
             }
         }
     }
@@ -66,28 +92,50 @@ fun TransactionItem(
     date: String,
     category: String,
     type: String,
-    color: Color
+    color: Color,
+    icon: Int,
+    valueType: String
 ) {
-    Row(modifier = Modifier
-        .clip(shape = RoundedCornerShape(12.dp))
-        .background(color = Color(0xFF31434D))
-        .fillMaxWidth()
-        .padding(16.dp),
+    Row(
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(12.dp))
+            .background(color = Color(0xFF31434D))
+            .fillMaxWidth()
+            .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_expenses),
-                contentDescription = null,
-                modifier = Modifier.size(26.dp)
-            )
+            Column(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(shape = RoundedCornerShape(5.dp))
+                    .background(color = Color(0xFF21353C)),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(26.dp)
+                )
+                Text(
+                    text = category,
+                    fontSize = 8.sp,
+                    color = Color.White
+                )
+            }
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "$title", color = Color.White, fontSize = 16.sp )
+            Column(
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "$title", color = Color.White, fontSize = 16.sp)
+                Text(text = "$date", color = Color(0xFFCCCCCC), fontSize = 12.sp)
+            }
         }
-        Text(text = "+ $amount", color = color, fontSize = 16.sp)
+        Text(text = "$valueType $amount", color = color, fontSize = 16.sp)
     }
     Spacer(modifier = Modifier.height(12.dp))
 }

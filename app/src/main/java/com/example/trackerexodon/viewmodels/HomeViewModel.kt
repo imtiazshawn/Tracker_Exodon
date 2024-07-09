@@ -7,6 +7,7 @@ import com.example.expensetracker.data.ExpenseDatabase
 import com.example.trackerexodon.data.dao.ExpenseDao
 import com.example.trackerexodon.data.model.ExpenseEntity
 import kotlinx.coroutines.flow.Flow
+import com.example.trackerexodon.R
 
 class HomeViewModel(dao: ExpenseDao) : ViewModel() {
     val expenses: Flow<List<ExpenseEntity>> = dao.getAllExpense()
@@ -44,6 +45,20 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
             }
         }
         return "$total"
+    }
+
+    fun getItemIcon(item: ExpenseEntity): Int {
+        if (item.category == "Salary") {
+            return R.drawable.ic_expenses
+        } else if (item.category == "Food") {
+            return R.drawable.ic_food
+        } else if (item.category == "Rent") {
+            return R.drawable.ic_rent
+        } else if (item.category == "Travel") {
+            return R.drawable.ic_travel
+        } else {
+            return R.drawable.ic_others
+        }
     }
 }
 

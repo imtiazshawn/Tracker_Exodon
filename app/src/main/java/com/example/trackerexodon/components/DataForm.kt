@@ -52,7 +52,7 @@ fun DataForm(viewModel: ExpenseViewModel, dateDialogVisibility: MutableState<Boo
     val category = viewModel.category
     val type = viewModel.type
 
-    val categories = listOf("Netflix", "Paypal", "Starbucks", "Salary", "Upwork")
+    val categories = listOf("Salary", "Food", "Rent", "Travel", "Others")
     var categoryExpand by remember { mutableStateOf(false) }
 
     val types = listOf("Income", "Expense")
