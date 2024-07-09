@@ -1,4 +1,11 @@
-package com.example.trackerexodon.viewmodels
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModel
 
-class ExpenseViewModel {
+class ExpenseViewModel : ViewModel() {
+    val title = mutableStateOf("")
+    val amount = mutableStateOf("")
+    val category = mutableStateOf("")
+    val type = mutableStateOf("")
+    val date = mutableStateOf(0L)
 }

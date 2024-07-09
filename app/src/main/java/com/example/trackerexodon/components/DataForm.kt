@@ -1,12 +1,12 @@
 package com.example.trackerexodon.components
 
+import ExpenseViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,8 +23,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -45,22 +43,15 @@ import com.example.trackerexodon.utils.DateFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DataForm(dateDialogVisibility: MutableState<Boolean>, date: MutableState<Long>) {
+fun DataForm(viewModel: ExpenseViewModel, dateDialogVisibility: MutableState<Boolean>) {
 
     val commonTextStyle = TextStyle(color = Color.White, fontSize = 16.sp, lineHeight = 20.sp)
 
-    val title = remember {
-        mutableStateOf("")
-    }
-    val amount = remember {
-        mutableStateOf("")
-    }
-    val category = remember {
-        mutableStateOf("")
-    }
-    val type = remember {
-        mutableStateOf("")
-    }
+    val title = viewModel.title
+    val amount = viewModel.amount
+    val date = viewModel.date
+    val category = viewModel.category
+    val type = viewModel.type
 
     val categories = listOf("Netflix", "Paypal", "Starbucks", "Salary", "Upwork")
     var categoryExpand by remember { mutableStateOf(false) }

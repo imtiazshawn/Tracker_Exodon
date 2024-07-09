@@ -1,5 +1,6 @@
 package com.example.trackerexodon.screens
 
+import ExpenseViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.trackerexodon.components.DataForm
@@ -38,6 +40,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun AddExpenseScreen(navController: NavHostController) {
+    val expenseViewModel: ExpenseViewModel = viewModel()
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = false
     val color = Color(0xFF21353C)
@@ -52,9 +55,7 @@ fun AddExpenseScreen(navController: NavHostController) {
     val dateDialogVisibility = remember {
         mutableStateOf(false)
     }
-    val date = remember {
-        mutableStateOf(0L)
-    }
+    val date = expenseViewModel.date
 
 
     Scaffold(
@@ -114,7 +115,10 @@ fun AddExpenseScreen(navController: NavHostController) {
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
-            DataForm(dateDialogVisibility, date)
+            DataForm(
+                viewModel = expenseViewModel,
+                dateDialogVisibility
+            )
         }
         if (dateDialogVisibility.value) {
             ExpenseDatePicker(
