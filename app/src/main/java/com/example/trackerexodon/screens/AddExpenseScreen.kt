@@ -64,11 +64,11 @@ fun AddExpenseScreen(navController: NavHostController) {
     val dateDialogVisibility = remember {
         mutableStateOf(false)
     }
-    val title = expenseViewModel.title.toString()
-    val amount = expenseViewModel.amount.toString()
-    var date = expenseViewModel.date.toString()
-    val category = expenseViewModel.category.toString()
-    val type = expenseViewModel.type.toString()
+    val title = expenseViewModel.title.value
+    val amount = expenseViewModel.amount.value
+    val date = expenseViewModel.date.value
+    val category = expenseViewModel.category.value
+    val type = expenseViewModel.type.value
     val model = ExpenseEntity(
         null,
         title,
@@ -104,7 +104,6 @@ fun AddExpenseScreen(navController: NavHostController) {
                 FloatingActionButton(
                     onClick = {
                         coroutineScope.launch {
-                            viewModel.addExpense(model)
                             if (viewModel.addExpense(model)) {
                                 navController.popBackStack()
                             }

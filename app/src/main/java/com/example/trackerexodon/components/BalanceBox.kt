@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.example.trackerexodon.R
 
 @Composable
-fun BalanceBox() {
+fun BalanceBox(expenses: String, income: String, balance: String) {
     Column(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(8.dp))
@@ -51,7 +51,7 @@ fun BalanceBox() {
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(text = "Total Balance", color = Color.White, fontSize = 16.sp)
-                Text(text = "1,00,980 BDT", color = Color.White, fontSize = 16.sp)
+                Text(text = "$balance BDT", color = Color.White, fontSize = 16.sp)
             }
         }
         Spacer(modifier = Modifier.height(24.dp))
@@ -77,7 +77,7 @@ fun BalanceBox() {
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(text = "Income", color = Color.White, fontSize = 16.sp)
-                    Text(text = "92,800 BDT", color = Color.White, fontSize = 16.sp)
+                    Text(text = "$income BDT", color = Color.White, fontSize = 16.sp)
                 }
             }
             Row(
@@ -97,8 +97,8 @@ fun BalanceBox() {
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
-                    Text(text = "Income", color = Color.White, fontSize = 16.sp)
-                    Text(text = "92,800 BDT", color = Color.White, fontSize = 16.sp)
+                    Text(text = "Expenses", color = Color.White, fontSize = 16.sp)
+                    Text(text = "$expenses BDT", color = Color.White, fontSize = 16.sp)
                 }
             }
         }
