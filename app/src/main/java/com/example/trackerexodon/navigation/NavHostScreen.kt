@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.trackerexodon.screens.AddExpenseScreen
+import com.example.trackerexodon.screens.ExpenseHistoryScreen
 import com.example.trackerexodon.screens.HomeScreen
 
 @Composable
@@ -17,6 +18,9 @@ fun NavHostScreen() {
         }
         composable(Routes.ADD_EXPENSE) {
             AddExpenseScreen(navController)
+        }
+        composable(Routes.EXPENSE_HISTORY) {
+            ExpenseHistoryScreen(navController)
         }
     }
 }
