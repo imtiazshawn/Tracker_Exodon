@@ -25,7 +25,7 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
         return "$total"
     }
 
-    fun getTotalExpense(list: List<ExpenseEntity>): String {
+    fun getTotalExpense(list: List<ExpenseEntity>): Double {
         var total = 0.0
         list.forEach {
             if (it.type == "Expense") {
@@ -33,10 +33,10 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
                 total += amount
             }
         }
-        return "$total"
+        return total
     }
 
-    fun getTotalIncome(list: List<ExpenseEntity>): String {
+    fun getTotalIncome(list: List<ExpenseEntity>): Double {
         var total = 0.0
         list.forEach {
             if (it.type == "Income") {
@@ -44,23 +44,48 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
                 total += amount
             }
         }
-        return "$total"
+        return total
+    }
+
+    private fun getCategoryExpense(list: List<ExpenseEntity>, category: String): Double {
+        var total = 0.0
+        list.forEach {
+            if (it.type == "Expense" && it.category == category) {
+                val amount = it.amount.toDoubleOrNull() ?: 0.0
+                total += amount
+            }
+        }
+        return total
+    }
+
+    fun getCategoryPercentages(list: List<ExpenseEntity>): Map<String, Float> {
+        val totalExpense = getTotalExpense(list)
+        if (totalExpense == 0.0) return mapOf()
+
+        val rentExpense = getCategoryExpense(list, "Rent")
+        val foodExpense = getCategoryExpense(list, "Food")
+        val travelExpense = getCategoryExpense(list, "Travel")
+        val othersExpense = getCategoryExpense(list, "Others")
+
+        return mapOf(
+            "Rent" to (rentExpense / totalExpense).toFloat(),
+            "Food" to (foodExpense / totalExpense).toFloat(),
+            "Travel" to (travelExpense / totalExpense).toFloat(),
+            "Others" to (othersExpense / totalExpense).toFloat()
+        )
     }
 
     fun getItemIcon(item: ExpenseEntity): Int {
-        if (item.category == "Salary") {
-            return R.drawable.ic_expenses
-        } else if (item.category == "Food") {
-            return R.drawable.ic_food
-        } else if (item.category == "Rent") {
-            return R.drawable.ic_rent
-        } else if (item.category == "Travel") {
-            return R.drawable.ic_travel
-        } else {
-            return R.drawable.ic_others
+        return when (item.category) {
+            "Salary" -> R.drawable.ic_expenses
+            "Food" -> R.drawable.ic_food
+            "Rent" -> R.drawable.ic_rent
+            "Travel" -> R.drawable.ic_travel
+            else -> R.drawable.ic_others
         }
     }
 }
+
 
 class HomeViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

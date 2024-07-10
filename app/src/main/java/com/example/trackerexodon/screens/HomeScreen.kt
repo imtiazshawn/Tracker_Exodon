@@ -1,5 +1,6 @@
 package com.example.trackerexodon.screens
 
+import ExpenseInsect
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,6 +56,7 @@ fun HomeScreen(navController: NavHostController) {
     val balance = viewModel.getBalance(state)
     val expenses = viewModel.getTotalExpense(state)
     val income = viewModel.getTotalIncome(state)
+    val categoryPercentages = viewModel.getCategoryPercentages(state)
 
     Scaffold(
         topBar = { Header() },
@@ -106,8 +108,24 @@ fun HomeScreen(navController: NavHostController) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Box(modifier = Modifier.padding(horizontal = 16.dp)) {
-                BalanceBox(expenses, income, balance)
+                BalanceBox(expenses.toString(), income.toString(), balance)
             }
+
+            Spacer(modifier = Modifier.height(28.dp))
+            Text(
+                text = "Expenses Insect",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            ExpenseInsect(
+                rentPercentage = categoryPercentages["Rent"] ?: 0f,
+                foodPercentage = categoryPercentages["Food"] ?: 0f,
+                travelPercentage = categoryPercentages["Travel"] ?: 0f,
+                othersPercentage = categoryPercentages["Others"] ?: 0f
+            )
 
             Spacer(modifier = Modifier.height(28.dp))
             ExpenseHistory(list = state)
