@@ -12,8 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,48 +37,88 @@ fun TransactionItem(
     type: String,
     color: Color,
     icon: Int,
-    valueType: String
+    valueType: String,
+    editable: MutableState<Boolean>
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(12.dp))
             .background(color = Color(0xFF31434D))
             .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .padding(horizontal = 16.dp)
     ) {
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(shape = RoundedCornerShape(5.dp))
-                    .background(color = Color(0xFF21353C)),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(id = icon),
-                    contentDescription = null,
-                    modifier = Modifier.size(26.dp)
-                )
-                Text(
-                    text = category,
-                    fontSize = 8.sp,
-                    color = Color.White
-                )
+                Column(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(shape = RoundedCornerShape(5.dp))
+                        .background(color = Color(0xFF21353C)),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(id = icon),
+                        contentDescription = null,
+                        modifier = Modifier.size(26.dp)
+                    )
+                    Text(
+                        text = category,
+                        fontSize = 8.sp,
+                        color = Color.White
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Column(
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = title, color = Color.White, fontSize = 16.sp)
+                    Text(text = date, color = Color(0xFFCCCCCC), fontSize = 12.sp)
+                }
             }
-            Spacer(modifier = Modifier.width(8.dp))
-            Column(
-                verticalArrangement = Arrangement.Center
+            Text(text = "$valueType $amount", color = color, fontSize = 16.sp)
+        }
+        if (editable.value) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "$title", color = Color.White, fontSize = 16.sp)
-                Text(text = "$date", color = Color(0xFFCCCCCC), fontSize = 12.sp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Delete,
+                        contentDescription = null,
+                        tint = Color(0xFFFC575D)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "Delete", color = Color(0xFFFC575D))
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Edit,
+                        contentDescription = null,
+                        tint = Color(0xFFFFC444)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "Edit", color = Color(0xFFFFC444))
+                }
             }
         }
-        Text(text = "$valueType $amount", color = color, fontSize = 16.sp)
     }
     Spacer(modifier = Modifier.height(12.dp))
 }

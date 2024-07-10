@@ -2,10 +2,13 @@ package com.example.trackerexodon.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,6 +17,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -22,6 +27,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,12 +61,16 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
         )
     }
 
+    val editable = remember {
+        mutableStateOf(false)
+    }
+
     // ViewModel State
     val state by viewModel.expenses.collectAsState(initial = emptyList())
     val sortedList = state.sortedByDescending { it.date.toLong() }
 
     Scaffold(
-        topBar = { Header() },
+        topBar = { Header(true, navController) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate("ADD_EXPENSE") },
@@ -80,14 +91,40 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
                 .padding(paddingValues)
         ) {
             Column(
-                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 12.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
-                Text(
-                    text = "Expenses History",
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Expenses History",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Row(
+                        modifier = Modifier.clickable {
+                            editable.value = !editable.value
+                        }
+                    ) {
+                        Icon(
+                            imageVector = if(editable.value) Icons.Outlined.Close else Icons.Outlined.Edit,
+                            contentDescription = null,
+                            tint = Color.Gray,
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = if(editable.value) "Cancel" else "Edit",
+                            color = Color.Gray,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.height(12.dp))
 
                 if (sortedList.isEmpty()) {
@@ -118,7 +155,8 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
                                 type = item.type,
                                 color = if (item.type == "Income") Color(0xFF3FDB9D) else Color(0xFFFC575D),
                                 icon = viewModel.getItemIcon(item),
-                                valueType = if (item.type == "Income") "+" else "-"
+                                valueType = if (item.type == "Income") "+" else "-",
+                                editable = editable
                             )
                         }
                     }

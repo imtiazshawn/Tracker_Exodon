@@ -75,7 +75,7 @@ fun AddExpenseScreen(navController: NavHostController) {
     )
 
 
-    Scaffold(topBar = { Header() }, floatingActionButton = {
+    Scaffold(topBar = { Header(false, navController) }, floatingActionButton = {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

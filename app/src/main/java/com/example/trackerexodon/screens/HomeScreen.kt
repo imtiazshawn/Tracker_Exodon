@@ -26,6 +26,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -71,7 +73,7 @@ fun HomeScreen(navController: NavHostController) {
     val categoryPercentages = viewModel.getCategoryPercentages(state)
 
     Scaffold(
-        topBar = { Header() },
+        topBar = { Header(false, navController) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate("ADD_EXPENSE") },
@@ -213,7 +215,8 @@ fun ExpenseHomeHistory(
                     type = item.type,
                     color = if (item.type == "Income") Color(0xFF3FDB9D) else Color(0xFFFC575D),
                     icon = viewModel.getItemIcon(item),
-                    valueType = if (item.type == "Income") "+" else "-"
+                    valueType = if (item.type == "Income") "+" else "-",
+                    editable = remember { mutableStateOf(false) }
                 )
             }
             Row(
