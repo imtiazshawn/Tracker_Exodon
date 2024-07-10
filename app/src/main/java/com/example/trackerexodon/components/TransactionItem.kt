@@ -1,7 +1,9 @@
 package com.example.trackerexodon.components
 
+import ExpenseViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun TransactionItem(
@@ -38,8 +41,10 @@ fun TransactionItem(
     color: Color,
     icon: Int,
     valueType: String,
-    editable: MutableState<Boolean>
+    editable: MutableState<Boolean>,
+    onDelete: (Int) -> Unit
 ) {
+    val expenseViewModel: ExpenseViewModel = viewModel()
     Column(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(12.dp))
@@ -94,6 +99,10 @@ fun TransactionItem(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
+                    modifier = Modifier.clickable {
+                        expenseViewModel.editDialogOpen.value = true
+                        id?.let { onDelete(it) }
+                    },
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -106,6 +115,9 @@ fun TransactionItem(
                     Text(text = "Delete", color = Color(0xFFFC575D))
                 }
                 Row(
+                    modifier = Modifier.clickable {
+                        expenseViewModel.editDialogOpen.value = true
+                    },
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {

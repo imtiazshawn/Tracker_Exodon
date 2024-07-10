@@ -1,5 +1,6 @@
 package com.example.trackerexodon.screens
 
+import ExpenseViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,11 +38,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.expensetracker.viewmodel.HomeViewModel
 import com.example.expensetracker.viewmodel.HomeViewModelFactory
 import com.example.trackerexodon.R
 import com.example.trackerexodon.components.Header
+import com.example.trackerexodon.components.TransactionDeleteDialog
 import com.example.trackerexodon.components.TransactionItem
 import com.example.trackerexodon.utils.DateFormatter
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -66,8 +69,12 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
     }
 
     // ViewModel State
+    val expenseViewModel: ExpenseViewModel = viewModel()
     val state by viewModel.expenses.collectAsState(initial = emptyList())
     val sortedList = state.sortedByDescending { it.date.toLong() }
+    val deleteModalOpen = expenseViewModel.deleteDialogOpen.value
+    val editModalOpen = expenseViewModel.editDialogOpen.value
+    val itemToDelete = remember { mutableStateOf<Int?>(null) }
 
     Scaffold(
         topBar = { Header(true, navController) },
@@ -156,12 +163,28 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
                                 color = if (item.type == "Income") Color(0xFF3FDB9D) else Color(0xFFFC575D),
                                 icon = viewModel.getItemIcon(item),
                                 valueType = if (item.type == "Income") "+" else "-",
-                                editable = editable
+                                editable = editable,
+                                onDelete = {
+                                    itemToDelete.value = item.id
+                                    expenseViewModel.deleteDialogOpen.value = true
+                                }
                             )
                         }
                     }
                 }
             }
+            TransactionDeleteDialog(
+                isOpen = deleteModalOpen,
+                title = "Delete Transaction",
+                bodyText = "Do you want to Delete the Transaction. It will never be undone",
+                onDismissRequest = { expenseViewModel.deleteDialogOpen.value = false },
+                onConfirmButtonClick = {
+                    itemToDelete.value?.let { id ->
+                        viewModel.deleteExpense(id)
+                        expenseViewModel.deleteDialogOpen.value = false
+                    }
+                }
+            )
         }
     }
 }

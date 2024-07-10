@@ -3,13 +3,17 @@ package com.example.expensetracker.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.expensetracker.data.ExpenseDatabase
 import com.example.trackerexodon.data.dao.ExpenseDao
 import com.example.trackerexodon.data.model.ExpenseEntity
 import kotlinx.coroutines.flow.Flow
 import com.example.trackerexodon.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class HomeViewModel(dao: ExpenseDao) : ViewModel() {
+class HomeViewModel(private val dao: ExpenseDao) : ViewModel() {
+
     val expenses: Flow<List<ExpenseEntity>> = dao.getAllExpense()
 
     fun getBalance(list: List<ExpenseEntity>): String {
@@ -84,8 +88,16 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
             else -> R.drawable.ic_others
         }
     }
-}
 
+    fun deleteExpense(expenseId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val expense = dao.getExpenseById(expenseId)
+            if (expense != null) {
+                dao.deleteExpense(expense)
+            }
+        }
+    }
+}
 
 class HomeViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

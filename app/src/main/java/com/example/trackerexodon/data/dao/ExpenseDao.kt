@@ -14,6 +14,9 @@ interface ExpenseDao {
     @Query("SELECT * FROM expense_table")
     fun getAllExpense(): Flow<List<ExpenseEntity>>
 
+    @Query("SELECT * FROM expense_table WHERE id = :expenseId LIMIT 1")
+    suspend fun getExpenseById(expenseId: Int): ExpenseEntity?
+
     @Insert
     suspend fun insertExpense(expenseEntity: ExpenseEntity)
 
@@ -22,5 +25,4 @@ interface ExpenseDao {
 
     @Update
     suspend fun updateExpense(expenseEntity: ExpenseEntity)
-
 }

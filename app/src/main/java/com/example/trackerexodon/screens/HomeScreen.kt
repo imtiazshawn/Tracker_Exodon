@@ -216,7 +216,8 @@ fun ExpenseHomeHistory(
                     color = if (item.type == "Income") Color(0xFF3FDB9D) else Color(0xFFFC575D),
                     icon = viewModel.getItemIcon(item),
                     valueType = if (item.type == "Income") "+" else "-",
-                    editable = remember { mutableStateOf(false) }
+                    editable = remember { mutableStateOf(false) },
+                    onDelete = {}
                 )
             }
             Row(

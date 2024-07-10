@@ -9,4 +9,7 @@ class ExpenseViewModel : ViewModel() {
     val date = mutableStateOf("")
     val category = mutableStateOf("")
     val type = mutableStateOf("")
+
+    val deleteDialogOpen = mutableStateOf(false)
+    val editDialogOpen = mutableStateOf(false)
 }
