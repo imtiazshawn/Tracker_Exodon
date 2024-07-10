@@ -1,6 +1,7 @@
 package com.example.trackerexodon.screens
 
 import ExpenseViewModel
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -49,6 +50,7 @@ fun AddExpenseScreen(navController: NavHostController) {
     val viewModel =
         AddExpenseViewModelFactory(LocalContext.current).create(AddExpenseViewModel::class.java)
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = false
@@ -56,8 +58,7 @@ fun AddExpenseScreen(navController: NavHostController) {
 
     LaunchedEffect(Unit) {
         systemUiController.setSystemBarsColor(
-            color = color,
-            darkIcons = useDarkIcons
+            color = color, darkIcons = useDarkIcons
         )
     }
 
@@ -70,59 +71,56 @@ fun AddExpenseScreen(navController: NavHostController) {
     val category = expenseViewModel.category.value
     val type = expenseViewModel.type.value
     val model = ExpenseEntity(
-        null,
-        title,
-        amount,
-        date,
-        category,
-        type
+        null, title, amount, date, category, type
     )
 
 
-    Scaffold(
-        topBar = { Header() },
-        floatingActionButton = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 32.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+    Scaffold(topBar = { Header() }, floatingActionButton = {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 32.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            FloatingActionButton(
+                onClick = { navController.popBackStack() },
+                containerColor = Color(0xFF296054),
+                modifier = Modifier.weight(0.2f),
+                shape = RoundedCornerShape(8.dp)
             ) {
-                FloatingActionButton(
-                    onClick = { navController.popBackStack() },
-                    containerColor = Color(0xFF296054),
-                    modifier = Modifier.weight(0.2f),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = null,
-                        tint = Color(0xFF3FDB9D)
-                    )
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                FloatingActionButton(
-                    onClick = {
-                        coroutineScope.launch {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = null,
+                    tint = Color(0xFF3FDB9D)
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            FloatingActionButton(
+                onClick = {
+                    coroutineScope.launch {
+                        if (title.isNotEmpty() && amount.isNotEmpty() && date.isNotEmpty() && category.isNotEmpty() && type.isNotEmpty()) {
                             if (viewModel.addExpense(model)) {
                                 navController.popBackStack()
                             }
+                        } else {
+                            Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT)
+                                .show()
                         }
-                    },
-                    containerColor = Color(0xFF3FDB9D),
-                    modifier = Modifier.weight(0.75f),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        text = "Add Expense",
-                        color = Color.White,
-                        fontSize = 16.sp,
-                        modifier = Modifier.padding(horizontal = 12.dp)
-                    )
-                }
+                    }
+                },
+                containerColor = Color(0xFF3FDB9D),
+                modifier = Modifier.weight(0.75f),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text(
+                    text = "Add Expense",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(horizontal = 12.dp)
+                )
             }
         }
-    ) { paddingValues ->
+    }) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -143,18 +141,14 @@ fun AddExpenseScreen(navController: NavHostController) {
             }
             Spacer(modifier = Modifier.height(16.dp))
             DataForm(
-                viewModel = expenseViewModel,
-                dateDialogVisibility
+                viewModel = expenseViewModel, dateDialogVisibility
             )
         }
         if (dateDialogVisibility.value) {
-            ExpenseDatePicker(
-                onDateSelected = {
-                    expenseViewModel.date.value = it.toString()
-                    dateDialogVisibility.value = false
-                },
-                onDismiss = { }
-            )
+            ExpenseDatePicker(onDateSelected = {
+                expenseViewModel.date.value = it.toString()
+                dateDialogVisibility.value = false
+            }, onDismiss = { })
         }
     }
 }

@@ -35,6 +35,8 @@ import com.example.trackerexodon.utils.DateFormatter
 fun ExpenseHistory(list: List<ExpenseEntity>) {
     val viewModel: HomeViewModel =
         HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
+    val sortedList = list.sortedByDescending { it.date.toLong() }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +50,7 @@ fun ExpenseHistory(list: List<ExpenseEntity>) {
         )
         Spacer(modifier = Modifier.height(12.dp))
 
-        if (list.isEmpty()) {
+        if (sortedList.isEmpty()) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -66,7 +68,7 @@ fun ExpenseHistory(list: List<ExpenseEntity>) {
             }
         } else {
             LazyColumn {
-                items(list) { item ->
+                items(sortedList) { item ->
                     TransactionItem(
                         id = item.id,
                         title = item.title,
