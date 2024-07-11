@@ -112,11 +112,13 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
                         fontWeight = FontWeight.SemiBold
                     )
                     Image(
-                        painter = painterResource(id = if(editable.value) R.drawable.ic_close_secondary else R.drawable.ic_edit_primary),
+                        painter = painterResource(id = if (editable.value) R.drawable.ic_close_secondary else R.drawable.ic_edit_primary),
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp).clickable {
-                            editable.value = !editable.value
-                        }
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clickable {
+                                editable.value = !editable.value
+                            }
                     )
                 }
                 Spacer(modifier = Modifier.height(12.dp))
@@ -147,7 +149,9 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
                                 date = DateFormatter.formatDateToHumanReadableForm(item.date.toLong()),
                                 category = item.category,
                                 type = item.type,
-                                color = if (item.type == "Income") Color(0xFF3FDB9D) else Color(0xFFFC575D),
+                                color = if (item.type == "Income") Color(0xFF3FDB9D) else Color(
+                                    0xFFFC575D
+                                ),
                                 icon = viewModel.getItemIcon(item),
                                 valueType = if (item.type == "Income") "+" else "-",
                                 editable = editable,
