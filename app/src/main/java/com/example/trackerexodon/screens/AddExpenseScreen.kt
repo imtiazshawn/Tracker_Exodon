@@ -21,8 +21,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +36,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.expensetracker.viewmodel.AddExpenseViewModel
 import com.example.expensetracker.viewmodel.AddExpenseViewModelFactory
 import com.example.trackerexodon.components.DataForm
-import com.example.trackerexodon.components.ExpenseDatePicker
 import com.example.trackerexodon.components.Header
 import com.example.trackerexodon.data.model.ExpenseEntity
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -62,9 +59,6 @@ fun AddExpenseScreen(navController: NavHostController) {
         )
     }
 
-    val dateDialogVisibility = remember {
-        mutableStateOf(false)
-    }
     val title = expenseViewModel.title.value
     val amount = expenseViewModel.amount.value
     val date = expenseViewModel.date.value
@@ -141,14 +135,8 @@ fun AddExpenseScreen(navController: NavHostController) {
             }
             Spacer(modifier = Modifier.height(16.dp))
             DataForm(
-                viewModel = expenseViewModel, dateDialogVisibility
+                viewModel = expenseViewModel
             )
-        }
-        if (dateDialogVisibility.value) {
-            ExpenseDatePicker(onDateSelected = {
-                expenseViewModel.date.value = it.toString()
-                dateDialogVisibility.value = false
-            }, onDismiss = { })
         }
     }
 }

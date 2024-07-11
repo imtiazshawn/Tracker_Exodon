@@ -24,7 +24,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,8 +43,8 @@ import com.example.trackerexodon.R
 import com.example.trackerexodon.utils.DateFormatter
 
 @Composable
-fun DataForm(viewModel: ExpenseViewModel, dateDialogVisibility: MutableState<Boolean>) {
-
+fun DataForm(viewModel: ExpenseViewModel) {
+    val context = LocalContext.current
     val commonTextStyle = TextStyle(color = Color.White, fontSize = 16.sp, lineHeight = 20.sp)
 
     val title = viewModel.title
@@ -58,7 +58,6 @@ fun DataForm(viewModel: ExpenseViewModel, dateDialogVisibility: MutableState<Boo
 
     val types = listOf("Income", "Expense")
     var typeExpand by remember { mutableStateOf(false) }
-
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
 
@@ -171,7 +170,11 @@ fun DataForm(viewModel: ExpenseViewModel, dateDialogVisibility: MutableState<Boo
 
         // Date
         Column(
-            modifier = Modifier.clickable { dateDialogVisibility.value = true }
+            modifier = Modifier.clickable {
+                showDatePickerDialog(context) { dateInMillis ->
+                    date.value = dateInMillis.toString()
+                }
+            }
         ) {
             Row(
                 modifier = Modifier
@@ -197,18 +200,26 @@ fun DataForm(viewModel: ExpenseViewModel, dateDialogVisibility: MutableState<Boo
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     BasicTextField(
-                        value = if (date.value.isEmpty()) "" else DateFormatter.formatDateToHumanReadableForm(date.value.toLong()),
+                        value = if (date.value.isEmpty()) "" else DateFormatter.formatDateToHumanReadableForm(
+                            date.value.toLong()
+                        ),
                         onValueChange = { },
                         enabled = false
                     ) {
                         Text(
-                            text = if (date.value.isEmpty()) "Date" else DateFormatter.formatDateToHumanReadableForm(date.value.toLong()),
+                            text = if (date.value.isEmpty()) "Date" else DateFormatter.formatDateToHumanReadableForm(
+                                date.value.toLong()
+                            ),
                             color = if (date.value.isEmpty()) Color.Gray else Color.White,
                             modifier = Modifier.padding(start = 4.dp)
                         )
                     }
                 }
-                Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null, tint = Color(0xFFCCCCCC),  )
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowDown,
+                    contentDescription = null,
+                    tint = Color(0xFFCCCCCC)
+                )
             }
             Divider(color = Color(0xFF414141), thickness = 1.dp)
         }
@@ -269,7 +280,11 @@ fun DataForm(viewModel: ExpenseViewModel, dateDialogVisibility: MutableState<Boo
                         }
                     }
                 }
-                Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null, tint = Color(0xFFCCCCCC),  )
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowDown,
+                    contentDescription = null,
+                    tint = Color(0xFFCCCCCC)
+                )
             }
             Divider(color = Color(0xFF414141), thickness = 1.dp)
         }
