@@ -1,6 +1,5 @@
 package com.example.trackerexodon.components
 
-import ExpenseViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.trackerexodon.R
 
 @Composable
 fun TransactionItem(
@@ -42,9 +41,9 @@ fun TransactionItem(
     icon: Int,
     valueType: String,
     editable: MutableState<Boolean>,
-    onDelete: (Int) -> Unit
+    onDelete: () -> Unit,
+    onEdit: () -> Unit
 ) {
-    val expenseViewModel: ExpenseViewModel = viewModel()
     Column(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(12.dp))
@@ -98,37 +97,20 @@ fun TransactionItem(
                     .padding(bottom = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    modifier = Modifier.clickable {
-                        expenseViewModel.editDialogOpen.value = true
-                        id?.let { onDelete(it) }
-                    },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Delete,
-                        contentDescription = null,
-                        tint = Color(0xFFFC575D)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Delete", color = Color(0xFFFC575D))
-                }
-                Row(
-                    modifier = Modifier.clickable {
-                        expenseViewModel.editDialogOpen.value = true
-                    },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Edit,
-                        contentDescription = null,
-                        tint = Color(0xFFFFC444)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Edit", color = Color(0xFFFFC444))
-                }
+                Image(
+                    painter = painterResource(id = R.drawable.ic_edit_yellow),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable { onEdit() }
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.ic_trash),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable { onDelete() }
+                )
             }
         }
     }

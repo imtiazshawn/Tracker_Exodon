@@ -89,6 +89,12 @@ class HomeViewModel(private val dao: ExpenseDao) : ViewModel() {
         }
     }
 
+    fun updateExpense(expenseEntity: ExpenseEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.updateExpense(expenseEntity)
+        }
+    }
+
     fun deleteExpense(expenseId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val expense = dao.getExpenseById(expenseId)

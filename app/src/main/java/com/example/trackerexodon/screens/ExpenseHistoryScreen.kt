@@ -18,8 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -44,8 +42,10 @@ import com.example.expensetracker.viewmodel.HomeViewModel
 import com.example.expensetracker.viewmodel.HomeViewModelFactory
 import com.example.trackerexodon.R
 import com.example.trackerexodon.components.Header
-import com.example.trackerexodon.components.TransactionDeleteDialog
+import com.example.trackerexodon.components.TransactionDialog
+import com.example.trackerexodon.components.TransactionEditDialog
 import com.example.trackerexodon.components.TransactionItem
+import com.example.trackerexodon.data.model.ExpenseEntity
 import com.example.trackerexodon.utils.DateFormatter
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -64,17 +64,15 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
         )
     }
 
-    val editable = remember {
-        mutableStateOf(false)
-    }
-
     // ViewModel State
+    val editable = remember { mutableStateOf(false) }
     val expenseViewModel: ExpenseViewModel = viewModel()
     val state by viewModel.expenses.collectAsState(initial = emptyList())
     val sortedList = state.sortedByDescending { it.date.toLong() }
     val deleteModalOpen = expenseViewModel.deleteDialogOpen.value
     val editModalOpen = expenseViewModel.editDialogOpen.value
     val itemToDelete = remember { mutableStateOf<Int?>(null) }
+    val itemToEdit = remember { mutableStateOf<ExpenseEntity?>(null) }
 
     Scaffold(
         topBar = { Header(true, navController) },
@@ -113,24 +111,13 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold
                     )
-                    Row(
-                        modifier = Modifier.clickable {
+                    Image(
+                        painter = painterResource(id = if(editable.value) R.drawable.ic_close_secondary else R.drawable.ic_edit_primary),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp).clickable {
                             editable.value = !editable.value
                         }
-                    ) {
-                        Icon(
-                            imageVector = if(editable.value) Icons.Outlined.Close else Icons.Outlined.Edit,
-                            contentDescription = null,
-                            tint = Color.Gray,
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = if(editable.value) "Cancel" else "Edit",
-                            color = Color.Gray,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
+                    )
                 }
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -167,13 +154,17 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
                                 onDelete = {
                                     itemToDelete.value = item.id
                                     expenseViewModel.deleteDialogOpen.value = true
+                                },
+                                onEdit = {
+                                    itemToEdit.value = item
+                                    expenseViewModel.editDialogOpen.value = true
                                 }
                             )
                         }
                     }
                 }
             }
-            TransactionDeleteDialog(
+            TransactionDialog(
                 isOpen = deleteModalOpen,
                 title = "Delete Transaction",
                 bodyText = "Do you want to Delete the Transaction. It will never be undone",
@@ -183,6 +174,15 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
                         viewModel.deleteExpense(id)
                         expenseViewModel.deleteDialogOpen.value = false
                     }
+                }
+            )
+            TransactionEditDialog(
+                isOpen = editModalOpen,
+                transaction = itemToEdit.value,
+                onDismissRequest = { expenseViewModel.editDialogOpen.value = false },
+                onConfirmButtonClick = { updatedTransaction ->
+                    viewModel.updateExpense(updatedTransaction)
+                    expenseViewModel.editDialogOpen.value = false
                 }
             )
         }
