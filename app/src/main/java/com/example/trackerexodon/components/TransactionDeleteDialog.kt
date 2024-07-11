@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TransactionDialog(
+fun TransactionDeleteDialog(
     isOpen: Boolean,
     title: String,
     bodyText: String,

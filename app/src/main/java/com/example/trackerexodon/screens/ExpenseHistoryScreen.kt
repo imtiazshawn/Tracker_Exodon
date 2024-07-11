@@ -42,7 +42,7 @@ import com.example.expensetracker.viewmodel.HomeViewModel
 import com.example.expensetracker.viewmodel.HomeViewModelFactory
 import com.example.trackerexodon.R
 import com.example.trackerexodon.components.Header
-import com.example.trackerexodon.components.TransactionDialog
+import com.example.trackerexodon.components.TransactionDeleteDialog
 import com.example.trackerexodon.components.TransactionEditDialog
 import com.example.trackerexodon.components.TransactionItem
 import com.example.trackerexodon.data.model.ExpenseEntity
@@ -164,7 +164,7 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
                     }
                 }
             }
-            TransactionDialog(
+            TransactionDeleteDialog(
                 isOpen = deleteModalOpen,
                 title = "Delete Transaction",
                 bodyText = "Do you want to Delete the Transaction. It will never be undone",
