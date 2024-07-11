@@ -1,11 +1,11 @@
 package com.example.trackerexodon.navigation
 
+import ExpenseHistoryScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.trackerexodon.screens.AddExpenseScreen
-import com.example.trackerexodon.screens.ExpenseHistoryScreen
 import com.example.trackerexodon.screens.HomeScreen
 
 @Composable

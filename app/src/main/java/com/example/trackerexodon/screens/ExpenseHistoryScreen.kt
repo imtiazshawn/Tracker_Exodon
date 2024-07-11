@@ -1,33 +1,14 @@
-package com.example.trackerexodon.screens
-
 import ExpenseViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,13 +22,11 @@ import androidx.navigation.NavHostController
 import com.example.expensetracker.viewmodel.HomeViewModel
 import com.example.expensetracker.viewmodel.HomeViewModelFactory
 import com.example.trackerexodon.R
-import com.example.trackerexodon.components.Header
-import com.example.trackerexodon.components.TransactionDeleteDialog
-import com.example.trackerexodon.components.TransactionEditDialog
-import com.example.trackerexodon.components.TransactionItem
+import com.example.trackerexodon.components.*
 import com.example.trackerexodon.data.model.ExpenseEntity
 import com.example.trackerexodon.utils.DateFormatter
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import java.util.*
 
 @Composable
 fun ExpenseHistoryScreen(navController: NavHostController) {
@@ -68,7 +47,16 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
     val editable = remember { mutableStateOf(false) }
     val expenseViewModel: ExpenseViewModel = viewModel()
     val state by viewModel.expenses.collectAsState(initial = emptyList())
-    val sortedList = state.sortedByDescending { it.date.toLong() }
+    var sortingOption by remember { mutableStateOf("Normal") }
+    var dropdownExpanded by remember { mutableStateOf(false) }
+
+    val sortedList = when (sortingOption) {
+        "This Day" -> state.filter { Date(it.date.toLong()).isToday() }
+        "This Week" -> state.filter { Date(it.date.toLong()).isThisWeek() }
+        "This Month" -> state.filter { Date(it.date.toLong()).isThisMonth() }
+        else -> state.sortedByDescending { it.date.toLong() }
+    }
+
     val deleteModalOpen = expenseViewModel.deleteDialogOpen.value
     val editModalOpen = expenseViewModel.editDialogOpen.value
     val itemToDelete = remember { mutableStateOf<Int?>(null) }
@@ -111,15 +99,63 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold
                     )
-                    Image(
-                        painter = painterResource(id = if (editable.value) R.drawable.ic_close_secondary else R.drawable.ic_edit_primary),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable {
-                                editable.value = !editable.value
+                    Row {
+                        Box {
+                            Image(
+                                painter = painterResource(R.drawable.ic_sorting_02),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clickable { dropdownExpanded = true }
+                            )
+                            DropdownMenu(
+                                expanded = dropdownExpanded,
+                                onDismissRequest = { dropdownExpanded = false },
+                                modifier = Modifier
+                                    .background(color = Color(0xFF31434D))
+                                    .padding(horizontal = 12.dp)
+                            ) {
+                                DropdownMenuItem(
+                                    text = { Text(text = "Normal", color = Color.White) },
+                                    onClick = {
+                                        sortingOption = "Normal"
+                                        dropdownExpanded = false
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(text = "This Day", color = Color.White) },
+                                    onClick = {
+                                        sortingOption = "This Day"
+                                        dropdownExpanded = false
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(text = "This Week", color = Color.White) },
+                                    onClick = {
+                                        sortingOption = "This Week"
+                                        dropdownExpanded = false
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(text = "This Month", color = Color.White) },
+                                    onClick = {
+                                        sortingOption = "This Month"
+                                        dropdownExpanded = false
+                                    }
+                                )
                             }
-                    )
+                        }
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Image(
+                            painter = painterResource(id = if (editable.value) R.drawable.ic_close_secondary else R.drawable.ic_edit_primary),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable {
+                                    editable.value = !editable.value
+                                }
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -191,4 +227,28 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
             )
         }
     }
+}
+
+fun Date.isToday(): Boolean {
+    val today = Calendar.getInstance()
+    val date = Calendar.getInstance()
+    date.time = this
+    return today.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
+            today.get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)
+}
+
+fun Date.isThisWeek(): Boolean {
+    val today = Calendar.getInstance()
+    val date = Calendar.getInstance()
+    date.time = this
+    return today.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
+            today.get(Calendar.WEEK_OF_YEAR) == date.get(Calendar.WEEK_OF_YEAR)
+}
+
+fun Date.isThisMonth(): Boolean {
+    val today = Calendar.getInstance()
+    val date = Calendar.getInstance()
+    date.time = this
+    return today.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
+            today.get(Calendar.MONTH) == date.get(Calendar.MONTH)
 }
