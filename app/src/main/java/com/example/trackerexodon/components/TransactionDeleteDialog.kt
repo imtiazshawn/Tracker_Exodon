@@ -42,7 +42,7 @@ fun TransactionDeleteDialog(
                 TextButton(
                     onClick = onConfirmButtonClick,
                 ) {
-                    Text(text = "Delete", color = Color.Red)
+                    Text(text = "Delete", color = Color(0xFFFC575D))
                 }
             },
             containerColor = Color(0xFF31434D),

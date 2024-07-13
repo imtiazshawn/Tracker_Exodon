@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -43,7 +43,7 @@ fun Header(backButton: Boolean, navController: NavHostController) {
             )
         } else {
             Icon(
-                imageVector = Icons.Outlined.Info,
+                imageVector = Icons.Outlined.FavoriteBorder,
                 contentDescription = null,
                 tint = Color.White,
                 modifier = Modifier.size(24.dp)
@@ -64,10 +64,12 @@ fun Header(backButton: Boolean, navController: NavHostController) {
             )
         }
         Icon(
-            imageVector = Icons.Default.Lock,
+            imageVector = Icons.Outlined.Info,
             contentDescription = null,
-            tint = Color(0xFF3FDB9D),
-            modifier = Modifier.size(24.dp)
+            tint = Color(0xFFFFFFFF),
+            modifier = Modifier.size(24.dp).clickable {
+                navController.navigate("ABOUT_SCREEN")
+            }
         )
     }
 }
