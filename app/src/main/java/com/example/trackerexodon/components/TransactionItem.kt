@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.trackerexodon.R
@@ -59,7 +60,8 @@ fun TransactionItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(1f)
             ) {
                 Column(
                     modifier = Modifier
@@ -77,18 +79,40 @@ fun TransactionItem(
                     Text(
                         text = category,
                         fontSize = 8.sp,
-                        color = Color.White
+                        color = Color.White,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Column(
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Text(text = title, color = Color.White, fontSize = 16.sp)
-                    Text(text = date, color = Color(0xFFCCCCCC), fontSize = 12.sp)
+                    Text(
+                        text = title,
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = date,
+                        color = Color(0xFFCCCCCC),
+                        fontSize = 12.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
-            Text(text = "$valueType $amount", color = color, fontSize = 16.sp)
+            Text(
+                text = "$valueType $amount",
+                color = color,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(start = 8.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         }
         if (editable.value) {
             Row(
