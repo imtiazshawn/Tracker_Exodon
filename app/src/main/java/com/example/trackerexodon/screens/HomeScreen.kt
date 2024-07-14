@@ -138,7 +138,11 @@ fun HomeScreen(navController: NavHostController) {
                 ExpenseInsect(
                     rentPercentage = categoryPercentages["Rent"] ?: 0f,
                     foodPercentage = categoryPercentages["Food"] ?: 0f,
+                    clothesPercentage = categoryPercentages["Clothes"] ?: 0f,
                     travelPercentage = categoryPercentages["Travel"] ?: 0f,
+                    accessoriesPercentage = categoryPercentages["Accessories"] ?: 0f,
+                    gadgetsPercentage = categoryPercentages["Gadgets"] ?: 0f,
+                    educationPercentage = categoryPercentages["Education"] ?: 0f,
                     othersPercentage = categoryPercentages["Others"] ?: 0f
                 )
 

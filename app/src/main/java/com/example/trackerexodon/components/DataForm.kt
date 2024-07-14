@@ -53,7 +53,7 @@ fun DataForm(viewModel: ExpenseViewModel) {
     val category = viewModel.category
     val type = viewModel.type
 
-    val categories = listOf("Salary", "Food", "Rent", "Travel", "Others")
+    val categories = listOf("Salary", "Food", "Clothes", "Rent", "Travel", "Accessories", "Gadgets", "Education", "Others")
     var categoryExpand by remember { mutableStateOf(false) }
 
     val types = listOf("Income", "Expense")

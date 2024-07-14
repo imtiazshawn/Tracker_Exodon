@@ -1,6 +1,7 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,23 +20,43 @@ import androidx.compose.ui.unit.sp
 fun ExpenseInsect(
     rentPercentage: Float,
     foodPercentage: Float,
+    clothesPercentage: Float,
     travelPercentage: Float,
+    accessoriesPercentage: Float,
+    gadgetsPercentage: Float,
+    educationPercentage: Float,
     othersPercentage: Float
 ) {
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clip(shape = RoundedCornerShape(8.dp))
             .background(color = Color(0xFF31434D))
             .padding(vertical = 16.dp, horizontal = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        ExpenseCategoryProgress("Rent", rentPercentage, Color(0xFFFFC444))
-        ExpenseCategoryProgress("Food", foodPercentage, Color(0xFFFFC444))
-        ExpenseCategoryProgress("Travel", travelPercentage, Color(0xFFFFC444))
-        ExpenseCategoryProgress("Others", othersPercentage, Color(0xFFFFC444))
+        Column(
+            modifier = Modifier.weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            ExpenseCategoryProgress("Food", foodPercentage, Color(0xFFFFC444))
+            ExpenseCategoryProgress("Clothes", clothesPercentage, Color(0xFFFFC444))
+            ExpenseCategoryProgress("Rent", rentPercentage, Color(0xFFFFC444))
+            ExpenseCategoryProgress("Travel", travelPercentage, Color(0xFFFFC444))
+        }
+        Column(
+            modifier = Modifier.weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            ExpenseCategoryProgress("Accessories", accessoriesPercentage, Color(0xFFFFC444))
+            ExpenseCategoryProgress("Gadgets", gadgetsPercentage, Color(0xFFFFC444))
+            ExpenseCategoryProgress("Education", educationPercentage, Color(0xFFFFC444))
+            ExpenseCategoryProgress("Others", othersPercentage, Color(0xFFFFC444))
+        }
     }
 }
 

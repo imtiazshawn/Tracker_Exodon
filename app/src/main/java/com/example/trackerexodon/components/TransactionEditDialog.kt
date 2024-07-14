@@ -43,7 +43,7 @@ fun TransactionEditDialog(
         var type by remember { mutableStateOf(transaction.type) }
         val commonTextStyle = TextStyle(color = Color.White, fontSize = 14.sp)
 
-        val categories = listOf("Salary", "Food", "Rent", "Travel", "Others")
+        val categories = listOf("Salary", "Food", "Clothes", "Rent", "Travel", "Accessories", "Gadgets", "Education", "Others")
         var categoryExpand by remember { mutableStateOf(false) }
 
         val types = listOf("Income", "Expense")
