@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -22,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 @Composable
-fun Header(backButton: Boolean, navController: NavHostController) {
+fun Header(backButton: Boolean, about: Boolean, navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -63,13 +64,24 @@ fun Header(backButton: Boolean, navController: NavHostController) {
                 fontWeight = FontWeight.SemiBold
             )
         }
-        Icon(
-            imageVector = Icons.Outlined.Info,
-            contentDescription = null,
-            tint = Color(0xFFFFFFFF),
-            modifier = Modifier.size(24.dp).clickable {
-                navController.navigate("ABOUT_SCREEN")
-            }
-        )
+        if (about) {
+            Icon(
+                imageVector = Icons.Outlined.Home,
+                contentDescription = null,
+                tint = Color(0xFFFFFFFF),
+                modifier = Modifier.size(24.dp).clickable {
+                    navController.navigate("HOME_SCREEN")
+                }
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Outlined.Info,
+                contentDescription = null,
+                tint = Color(0xFFFFFFFF),
+                modifier = Modifier.size(24.dp).clickable {
+                    navController.navigate("ABOUT_SCREEN")
+                }
+            )
+        }
     }
 }

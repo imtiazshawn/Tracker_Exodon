@@ -63,7 +63,7 @@ fun ExpenseHistoryScreen(navController: NavHostController) {
     val itemToEdit = remember { mutableStateOf<ExpenseEntity?>(null) }
 
     Scaffold(
-        topBar = { Header(true, navController) },
+        topBar = { Header(true, about = false, navController) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate("ADD_EXPENSE") },

@@ -37,7 +37,7 @@ fun AboutScreen(navController: NavHostController) {
     val localUriHandler = LocalUriHandler.current
 
     Scaffold(
-        topBar = { Header(true, navController) },
+        topBar = { Header(true, about = true, navController) },
     ) { paddingValues ->
         Column(
             modifier = Modifier

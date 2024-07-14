@@ -73,7 +73,7 @@ fun HomeScreen(navController: NavHostController) {
     val categoryPercentages = viewModel.getCategoryPercentages(state)
 
     Scaffold(
-        topBar = { Header(false, navController) },
+        topBar = { Header(false, about = false, navController) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate("ADD_EXPENSE") },
