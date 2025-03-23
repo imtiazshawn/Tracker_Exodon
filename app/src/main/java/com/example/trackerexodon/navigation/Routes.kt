@@ -6,4 +6,5 @@ object Routes {
     const val ADD_EXPENSE = "ADD_EXPENSE"
     const val EXPENSE_HISTORY = "EXPENSE_HISTORY"
     const val ABOUT_SCREEN = "ABOUT_SCREEN"
+    const val MONTHLY_EXPENSE_SCREEN = "MONTHLY_EXPENSE_SCREEN"
 }

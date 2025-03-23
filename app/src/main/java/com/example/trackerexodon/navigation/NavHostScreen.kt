@@ -1,6 +1,7 @@
 package com.example.trackerexodon.navigation
 
 import ExpenseHistoryScreen
+import MonthlyExpenseScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,6 +30,9 @@ fun NavHostScreen() {
         }
         composable(Routes.ABOUT_SCREEN) {
             AboutScreen(navController)
+        }
+        composable(Routes.MONTHLY_EXPENSE_SCREEN) {
+            MonthlyExpenseScreen(navController)
         }
     }
 }

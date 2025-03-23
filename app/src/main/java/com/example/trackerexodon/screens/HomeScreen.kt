@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -124,6 +125,23 @@ fun HomeScreen(navController: NavHostController) {
 
                 Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                     BalanceBox(expenses.toString(), income.toString(), balance)
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    Text(
+                        text = "See Monthly Expenses",
+                        color = Color(0xFFcc8f00),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        textDecoration = TextDecoration.Underline,
+                        modifier = Modifier
+                            .padding(top = 8.dp,end = 18.dp)
+                            .clickable {
+                            navController.navigate("MONTHLY_EXPENSE_SCREEN")
+                        }
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(28.dp))
