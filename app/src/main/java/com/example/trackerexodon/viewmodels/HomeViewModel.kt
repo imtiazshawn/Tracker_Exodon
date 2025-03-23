@@ -73,6 +73,8 @@ class HomeViewModel(private val dao: ExpenseDao) : ViewModel() {
         val accessoriesExpense = getCategoryExpense(list, "Accessories")
         val gadgetsExpense = getCategoryExpense(list, "Gadgets")
         val educationExpense = getCategoryExpense(list, "Education")
+        val familyExpense = getCategoryExpense(list, "Family")
+        val donationsExpense = getCategoryExpense(list, "Donations")
         val othersExpense = getCategoryExpense(list, "Others")
 
         return mapOf(
@@ -83,6 +85,8 @@ class HomeViewModel(private val dao: ExpenseDao) : ViewModel() {
             "Accessories" to (accessoriesExpense / totalExpense).toFloat(),
             "Gadgets" to (gadgetsExpense / totalExpense).toFloat(),
             "Education" to (educationExpense / totalExpense).toFloat(),
+            "Family" to (familyExpense / totalExpense).toFloat(),
+            "Donations" to (donationsExpense / totalExpense).toFloat(),
             "Others" to (othersExpense / totalExpense).toFloat()
         )
     }
@@ -97,6 +101,8 @@ class HomeViewModel(private val dao: ExpenseDao) : ViewModel() {
             "Travel" -> R.drawable.ic_travel
             "Accessories" -> R.drawable.ic_accessories
             "Gadgets" -> R.drawable.ic_gadget
+            "Family" -> R.drawable.ic_family
+            "Donations" -> R.drawable.ic_donations
             else -> R.drawable.ic_others
         }
     }

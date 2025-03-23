@@ -25,6 +25,8 @@ fun ExpenseInsect(
     accessoriesPercentage: Float,
     gadgetsPercentage: Float,
     educationPercentage: Float,
+    familyPercentage: Float,
+    donationsPercentage: Float,
     othersPercentage: Float
 ) {
     Row(
@@ -46,6 +48,7 @@ fun ExpenseInsect(
             ExpenseCategoryProgress("Clothes", clothesPercentage, Color(0xFFFFC444))
             ExpenseCategoryProgress("Rent", rentPercentage, Color(0xFFFFC444))
             ExpenseCategoryProgress("Travel", travelPercentage, Color(0xFFFFC444))
+            ExpenseCategoryProgress("Family", familyPercentage, Color(0xFFFFC444))
         }
         Column(
             modifier = Modifier.weight(1f),
@@ -55,6 +58,7 @@ fun ExpenseInsect(
             ExpenseCategoryProgress("Accessories", accessoriesPercentage, Color(0xFFFFC444))
             ExpenseCategoryProgress("Gadgets", gadgetsPercentage, Color(0xFFFFC444))
             ExpenseCategoryProgress("Education", educationPercentage, Color(0xFFFFC444))
+            ExpenseCategoryProgress("Donations", donationsPercentage, Color(0xFFFFC444))
             ExpenseCategoryProgress("Others", othersPercentage, Color(0xFFFFC444))
         }
     }

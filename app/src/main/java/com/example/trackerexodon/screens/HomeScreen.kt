@@ -94,32 +94,32 @@ fun HomeScreen(navController: NavHostController) {
                 .padding(paddingValues)
         ) {
             item {
-                Spacer(modifier = Modifier.height(36.dp))
-                Row(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Hey ",
-                        color = Color(0xFFFFFFFF),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        text = "There!",
-                        color = Color(0xFFFFFFFF),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Explore Here for your Expenses History!",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
+//                Spacer(modifier = Modifier.height(36.dp))
+//                Row(
+//                    modifier = Modifier.padding(horizontal = 16.dp),
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Text(
+//                        text = "Hey ",
+//                        color = Color(0xFFFFFFFF),
+//                        fontSize = 20.sp,
+//                        fontWeight = FontWeight.SemiBold
+//                    )
+//                    Text(
+//                        text = "There!",
+//                        color = Color(0xFFFFFFFF),
+//                        fontSize = 20.sp,
+//                        fontWeight = FontWeight.SemiBold
+//                    )
+//                }
+//                Spacer(modifier = Modifier.height(4.dp))
+//                Text(
+//                    text = "Explore Here for your Expenses History!",
+//                    color = Color.White,
+//                    fontSize = 16.sp,
+//                    fontWeight = FontWeight.Normal,
+//                    modifier = Modifier.padding(horizontal = 16.dp)
+//                )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Box(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -143,6 +143,8 @@ fun HomeScreen(navController: NavHostController) {
                     accessoriesPercentage = categoryPercentages["Accessories"] ?: 0f,
                     gadgetsPercentage = categoryPercentages["Gadgets"] ?: 0f,
                     educationPercentage = categoryPercentages["Education"] ?: 0f,
+                    familyPercentage = categoryPercentages["Family"] ?: 0f,
+                    donationsPercentage = categoryPercentages["Donations"] ?: 0f,
                     othersPercentage = categoryPercentages["Others"] ?: 0f
                 )
 
